@@ -86,7 +86,6 @@ public class GameObject extends Group {
      * @return rectangle
      */
     public Rectangle getCollisionRectangle(){
-        //Vector2 stagePos = localToStageCoordinates(new Vector2(getX(), getY()));
         collisionRectangle.setPosition(getX(), getY());
         return collisionRectangle;
     }
