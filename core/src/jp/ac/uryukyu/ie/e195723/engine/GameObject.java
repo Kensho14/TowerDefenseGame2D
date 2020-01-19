@@ -82,11 +82,10 @@ public class GameObject extends Group {
     }
 
     /**
-     * 当たり判定用のRectangleを返す。 x,yはStage座標。
+     * 当たり判定用のRectangleを返す。
      * @return rectangle
      */
     public Rectangle getCollisionRectangle(){
-        //Vector2 stagePos = localToStageCoordinates(new Vector2(getX(), getY()));
         collisionRectangle.setPosition(getX(), getY());
         return collisionRectangle;
     }
