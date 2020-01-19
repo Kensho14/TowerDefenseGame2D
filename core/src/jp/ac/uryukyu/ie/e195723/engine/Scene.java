@@ -16,11 +16,14 @@ public class Scene extends Stage {
     private ShapeRenderer debugRender;
     private List<GameObject> gameObjectToRemove;
 
+    public boolean useCollisionDebugLine;
+
     public Scene(Viewport viewport){
         super(viewport);
         gameObjects = new ArrayList<>();
         gameObjectToRemove = new ArrayList<>();
         debugRender = new ShapeRenderer();
+        useCollisionDebugLine = false;
     }
     public Scene(){
         this(new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -69,13 +72,15 @@ public class Scene extends Stage {
         gameObjectToRemove.clear();
         checkCollisions();
         super.draw();
-        debugRender.begin(ShapeRenderer.ShapeType.Line);
-        for (GameObject gameObject : gameObjects){
-            if (gameObject.getPhysicsMode() == GameObject.PhysicsMode.None) continue;
-            Rectangle rectangle = gameObject.getCollisionRectangle();
-            debugRender.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        if (useCollisionDebugLine){
+            debugRender.begin(ShapeRenderer.ShapeType.Line);
+            for (GameObject gameObject : gameObjects){
+                if (gameObject.getPhysicsMode() == GameObject.PhysicsMode.None) continue;
+                Rectangle rectangle = gameObject.getCollisionRectangle();
+                debugRender.rect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+            }
+            debugRender.end();
         }
-        debugRender.end();
     }
 
     private void checkCollisions(){

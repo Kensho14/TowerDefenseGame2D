@@ -6,6 +6,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.TimeUtils;
 import jp.ac.uryukyu.ie.e195723.engine.GameObject;
 import jp.ac.uryukyu.ie.e195723.engine.IGameScript;
@@ -20,11 +23,16 @@ public class MyGdxGame extends ApplicationAdapter {
 	private Sound dropletSound;
 	private long lastDropTime;
 
+	private Skin uiSkin;
+	private Table uiTable;
+	private Label scoreLabel;
+
 	private int score;
 	
 	@Override
 	public void create () {
 		scene = new Scene();
+		scene.useCollisionDebugLine = true;
 		score = 0;
 
 		mainMusic = Gdx.audio.newMusic(Gdx.files.internal("undertreeinrain.mp3"));
@@ -35,6 +43,16 @@ public class MyGdxGame extends ApplicationAdapter {
 		GameObject bucket = new GameObject(scene, "bucket", Gdx.files.internal("bucket.png"), GameObject.PhysicsMode.Active);
 		SimpleMoveScript simpleMoveScript = new SimpleMoveScript(200, false);
 		bucket.attachScript(simpleMoveScript);
+
+		uiSkin = new Skin(Gdx.files.internal("skins/testskin/assets/uiskin.json"));
+		uiTable = new Table();
+		uiTable.setFillParent(true);
+		scene.addActor(uiTable);
+		uiTable.setDebug(true);
+
+		uiTable.left().top();
+		scoreLabel = new Label("Score: 1", uiSkin);
+		uiTable.add(scoreLabel);
 
 		scene.start();
 	}
@@ -65,6 +83,7 @@ public class MyGdxGame extends ApplicationAdapter {
 				if (target.getName().equals("bucket")){
 					dropletSound.play();
 					score++;
+					scoreLabel.setText("Score: "+score);
 					System.out.println("Score: "+score);
 					gameObject.remove();
 				}
