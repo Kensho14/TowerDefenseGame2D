@@ -35,12 +35,12 @@ public class MyGdxGame extends ApplicationAdapter {
 		scene.useCollisionDebugLine = true;
 		score = 0;
 
-		mainMusic = Gdx.audio.newMusic(Gdx.files.internal("undertreeinrain.mp3"));
+		mainMusic = Gdx.audio.newMusic(Gdx.files.internal("sample/undertreeinrain.mp3"));
 		mainMusic.setLooping(true);
 		mainMusic.play();
-		dropletSound = Gdx.audio.newSound(Gdx.files.internal("waterdrop24.wav"));
+		dropletSound = Gdx.audio.newSound(Gdx.files.internal("sample/waterdrop24.wav"));
 
-		GameObject bucket = new GameObject(scene, "bucket", Gdx.files.internal("bucket.png"), GameObject.PhysicsMode.Active);
+		GameObject bucket = new GameObject(scene, "bucket", Gdx.files.internal("sample/bucket.png"), GameObject.PhysicsMode.Active);
 		SimpleMoveScript simpleMoveScript = new SimpleMoveScript(200, false);
 		bucket.attachScript(simpleMoveScript);
 
@@ -58,7 +58,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	}
 
 	private void spawnRaindrop(){
-		GameObject drop = new GameObject(scene, "droplet", Gdx.files.internal("droplet.png"), GameObject.PhysicsMode.Passive);
+		GameObject drop = new GameObject(scene, "droplet", Gdx.files.internal("sample/droplet.png"), GameObject.PhysicsMode.Passive);
 		drop.attachScript(new IGameScript() {
 			@Override
 			public void start(GameObject gameObject) {
