@@ -20,6 +20,7 @@ import jp.ac.uryukyu.ie.e195723.mobs.Zombie;
 import jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,8 @@ public class BattleScene extends Scene {
     private Skin uiSkin;
     private Table uiTable;
     private Table inventoryUiTable;
+    private Container<Label> gameFinishScreen;
+    private Label gameFinishLabel;
 
     private Label timerLabel;
     private Label moneyLabel;
@@ -41,12 +44,14 @@ public class BattleScene extends Scene {
     private int moneyAmount;
     private long remainingTime;//ms
     private long lastUpdateTime;//ms
+    private List<MobBase> enemySpawnQue;
 
     private List<UnitData> inventoryData;
     private UnitData selectedUnitData;
     private Texture selectedUnitIcon;
 
     private List<MobBase> enemies;
+    private boolean isPaused;
 
     public BattleScene(){
         useCollisionDebugLine = true;
@@ -89,6 +94,12 @@ public class BattleScene extends Scene {
     private void finishGame(boolean isVictory){
         pause();
         System.out.println("game finish: "+isVictory);
+        if (isVictory){
+            gameFinishLabel.setText("You Win!");
+        }else{
+            gameFinishLabel.setText("Game Over!");
+        }
+        gameFinishLabel.setVisible(true);
     }
 
     void setupBackground(){
@@ -135,17 +146,24 @@ public class BattleScene extends Scene {
         inventoryUiTable.row();
         ScrollPane scrollPane = new ScrollPane(hGroup, uiSkin);
         inventoryUiTable.add(scrollPane);
+
+        gameFinishLabel = new Label("Game Over", uiSkin);
+        gameFinishLabel.setVisible(false);
+        gameFinishScreen = new Container<>(gameFinishLabel);
+        gameFinishScreen.setFillParent(true);
+        addActor(gameFinishScreen);
     }
 
     public void loadSample(){
         lastUpdateTime = TimeUtils.millis();
         remainingTime = 3*60*1000;
-        moneyAmount = 500;
+        moneyAmount = 250;
         inventoryData = new ArrayList<>();
-        inventoryData.add(new UnitData("iron2", 50, "Iron", "img/stage/iron2.png"));
-        inventoryData.add(new UnitData("drum_can", 20, "Drum can", "img/stage/drum_can.png"));
+        inventoryData.add(new UnitData("drum_can", 20, "Drum", "img/stage/drum_can.png"));
+        inventoryData.add(new UnitData("iron2", 50, "IronBlock", "img/stage/iron2.png"));
         inventoryData.add(new UnitData("soldier1", 100, "Soldier", "img/characters/soldier_chara_33.png"));
         enemies = new ArrayList<>();
+        enemySpawnQue = new LinkedList<>();
         setupUI();
         setupBackground();
         for (int i=0; i < (Gdx.graphics.getWidth()/ BLOCK_BASE_SIZE); i++){
@@ -153,6 +171,7 @@ public class BattleScene extends Scene {
         }
         new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/iron2.png"), 10, new Vector2(1, 1), getPosFromBlockPos(new Vector2(4, 1)));
         spawnUnit(new UnitData("zombie1", 10, "Zombie", "img/characters/zombie_chara_33.png"), new Vector2(-1,1));
+
     }
 
     /**
@@ -178,9 +197,14 @@ public class BattleScene extends Scene {
             getBatch().end();
         }
         super.draw();
-        remainingTime -= TimeUtils.timeSinceMillis(lastUpdateTime);
-        lastUpdateTime = TimeUtils.millis();
-        timerLabel.setText("RemainingTime: "+getFormattedTimeText(remainingTime));
+        if (!isPaused){
+            remainingTime -= TimeUtils.timeSinceMillis(lastUpdateTime);
+            lastUpdateTime = TimeUtils.millis();
+            timerLabel.setText("RemainingTime: "+getFormattedTimeText(remainingTime));
+            if (remainingTime <= 0){
+                finishGame(true);
+            }
+        }
         if (selectedUnitIcon != null){
             Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
             getCamera().unproject(mousePos);
@@ -191,11 +215,26 @@ public class BattleScene extends Scene {
     }
 
     @Override
+    public void pause(){
+        super.pause();
+        isPaused = true;
+    }
+
+    @Override
+    public void resume(){
+        super.resume();
+        isPaused = false;
+    }
+
+    @Override
     public void removeGameObject(GameObject gameObject){
         super.removeGameObject(gameObject);
         if (enemies.contains(gameObject)){
             System.out.println("remove enemy");
             enemies.remove(gameObject);
+            if (enemies.size() == 0 && enemySpawnQue.size() == 0){
+                finishGame(true);
+            }
         }
     }
 
