@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import jp.ac.uryukyu.ie.e195723.StageObject;
 import jp.ac.uryukyu.ie.e195723.engine.GameObject;
 import jp.ac.uryukyu.ie.e195723.engine.IGameScript;
+import jp.ac.uryukyu.ie.e195723.scenes.BattleScene;
 
 public class ZombieSimpleAI implements IGameScript {
     private long attackCoolTime;
@@ -41,6 +42,9 @@ public class ZombieSimpleAI implements IGameScript {
 
     @Override
     public void update(GameObject gameObject, float delta) {
+        if (gameObject.getX() > Gdx.graphics.getWidth()){
+            ((BattleScene)gameObject.getStage()).enemyScored();
+        }
         if (TimeUtils.timeSinceNanos(lastBarkTime) > 15*TimeUtils.millisToNanos(1000)){
             barkVoice.play();
             lastBarkTime = TimeUtils.nanoTime();

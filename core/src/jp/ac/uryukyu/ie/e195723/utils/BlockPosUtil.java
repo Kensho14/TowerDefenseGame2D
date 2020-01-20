@@ -1,5 +1,6 @@
 package jp.ac.uryukyu.ie.e195723.utils;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class BlockPosUtil {
@@ -11,7 +12,9 @@ public class BlockPosUtil {
      * @return ブロックでの整数座標
      */
     public static Vector2 getBlockPos(Vector2 position){
-        return new Vector2(0, 0);
+        float xTemp = MathUtils.floor(position.x/BLOCK_BASE_SIZE);
+        float yTemp = MathUtils.floor(position.y/BLOCK_BASE_SIZE);
+        return new Vector2(xTemp, yTemp);
     }
 
     /**

@@ -3,9 +3,6 @@ package jp.ac.uryukyu.ie.e195723;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import jp.ac.uryukyu.ie.e195723.engine.Scene;
 import jp.ac.uryukyu.ie.e195723.scenes.BattleScene;
 
 public class GameMain extends ApplicationAdapter {
@@ -14,7 +11,7 @@ public class GameMain extends ApplicationAdapter {
 	@Override
 	public void create () {
 		currentScene = new BattleScene();
-		currentScene.LoadSample();
+		currentScene.loadSample();
 		currentScene.start();
 	}
 
