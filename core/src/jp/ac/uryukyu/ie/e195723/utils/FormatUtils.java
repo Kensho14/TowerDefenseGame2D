@@ -1,5 +1,8 @@
 package jp.ac.uryukyu.ie.e195723.utils;
 
+/**
+ * フォーマット系のユーティリティ
+ */
 public class FormatUtils {
     /**
      * ミリ秒から m:ss といった時間を表す文字列に変換する

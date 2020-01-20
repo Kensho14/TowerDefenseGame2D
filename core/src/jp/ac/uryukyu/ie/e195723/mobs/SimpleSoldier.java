@@ -8,11 +8,19 @@ import jp.ac.uryukyu.ie.e195723.mobs.scripts.SimpleSoldierAI;
 import jp.ac.uryukyu.ie.e195723.mobs.scripts.ZombieSimpleAI;
 import jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil;
 
+/**
+ * シンプルな兵士
+ */
 public class SimpleSoldier extends MobBase {
     public static final float DEFAULT_HITPOINT = 7;
     public static final float DEFAULT_MOVESPEED = 0;
     public static final String TEX_PATH = "img/characters/soldier_chara_33.png";
 
+    /**
+     *
+     * @param scene 所属するシーン
+     * @param position 出現位置
+     */
     public SimpleSoldier(Scene scene, Vector2 position) {
         super(scene, "mob_soldier", Gdx.files.internal(TEX_PATH), PhysicsMode.Active, DEFAULT_MOVESPEED, DEFAULT_HITPOINT, TeamCode.Defense);
         changeSize(48, 62);

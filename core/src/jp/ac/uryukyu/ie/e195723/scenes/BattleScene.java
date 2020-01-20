@@ -27,6 +27,9 @@ import static jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil.BLOCK_BASE_SIZE;
 import static jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil.getPosFromBlockPos;
 import static jp.ac.uryukyu.ie.e195723.utils.FormatUtils.getFormattedTimeText;
 
+/**
+ * メインの戦闘シーン
+ */
 public class BattleScene extends Scene {
     private Texture backgroundTex;
     private Music backgroundMusic;
@@ -55,6 +58,9 @@ public class BattleScene extends Scene {
 
     private Map<String, UnitData> unitDataBank;
 
+    /**
+     * キュー用のUnitDataとミリ秒のコンテナ
+     */
     public class UnitDataTimePair{
         public UnitData unitData;
         public long milliseconds;
@@ -92,6 +98,11 @@ public class BattleScene extends Scene {
         }
     }
 
+    /**
+     * UnitDataをもとにスポーンさせる
+     * @param unitData UnitData
+     * @param blockPosition 出現位置
+     */
     public void spawnUnit(UnitData unitData, Vector2 blockPosition){
         //TODO:余裕があったらハードコーディングを直して，jsonから読み込む
         if (unitData.id.equalsIgnoreCase("iron2")){
@@ -121,6 +132,9 @@ public class BattleScene extends Scene {
         gameFinishLabel.setVisible(true);
     }
 
+    /**
+     * 背景系
+     */
     void setupBackground(){
         backgroundTex = new Texture(Gdx.files.internal("img/stage/back01.png"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/The-Nine.mp3"));
@@ -128,6 +142,9 @@ public class BattleScene extends Scene {
         backgroundMusic.play();
     }
 
+    /**
+     * UI系
+     */
     void setupUI(){
         uiSkin = new Skin(Gdx.files.internal("skins/testskin/assets/uiskin.json"));
         uiTable = new Table();
@@ -173,6 +190,9 @@ public class BattleScene extends Scene {
         addActor(gameFinishScreen);
     }
 
+    /**
+     * サンプルシーンのロード
+     */
     public void loadSample(){
         //本来はjson等から動的に読み込むが，ここではハードコーディング
         lastUpdateTime = TimeUtils.millis();

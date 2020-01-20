@@ -10,6 +10,9 @@ import jp.ac.uryukyu.ie.e195723.engine.IGameScript;
 import jp.ac.uryukyu.ie.e195723.mobs.MobBase;
 import jp.ac.uryukyu.ie.e195723.scenes.BattleScene;
 
+/**
+ * ゾンビ用のシンプルなAI
+ */
 public class ZombieSimpleAI implements IGameScript {
     private long attackCoolTime;
     private float attackPoint;
@@ -22,6 +25,7 @@ public class ZombieSimpleAI implements IGameScript {
     /**
      * コンストラクタ
      * @param attackCoolTime 攻撃のクールタイム(ms)
+     * @param attackPoint 攻撃力
      */
     public ZombieSimpleAI(long attackCoolTime, float attackPoint){
         this.attackCoolTime = TimeUtils.millisToNanos(attackCoolTime);
@@ -31,6 +35,11 @@ public class ZombieSimpleAI implements IGameScript {
         barkVoice = Gdx.audio.newSound(Gdx.files.internal("sound/zombie-voice1.mp3"));
     }
 
+    /**
+     * 攻撃を実行する（基本的に外部からは呼び出さない）
+     * @param zombie 自身
+     * @param target 相手
+     */
     public void attack(StageObject zombie, StageObject target){
         target.receiveDamage(attackPoint, zombie);
         attackSound.play();

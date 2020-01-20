@@ -3,6 +3,9 @@ package jp.ac.uryukyu.ie.e195723.utils;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * 座標計算のユーティリティ
+ */
 public class BlockPosUtil {
     public static final int BLOCK_BASE_SIZE = 32;
 

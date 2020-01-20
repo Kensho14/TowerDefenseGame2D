@@ -14,6 +14,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Groupを包み込んで利便性を高めたゲーム内でのオブジェクトの基底クラス
+ */
 public class GameObject extends Group {
     private Texture texture;
     private TextureRegion textureRegion;
@@ -25,12 +28,22 @@ public class GameObject extends Group {
 
     public Set<GameObject> collidingGameObjects;
 
+    /**
+     * 衝突判定時の振る舞い
+     */
     public enum PhysicsMode{
         Active,//相手との衝突判定を行う
         Passive,//自分から判定はしないが，当たる。
         None//衝突判定で完全に無視される。
     }
 
+    /**
+     * コンストラクタ
+     * @param scene オブジェクトが所属するScene
+     * @param name オブジェクトの名前（重複可能）
+     * @param texture textureのFileHandle
+     * @param physicsMode 衝突判定時の振る舞い
+     */
     public GameObject(Scene scene, String name, FileHandle texture, PhysicsMode physicsMode){
         isPaused = true;
         setName(name);
@@ -51,6 +64,9 @@ public class GameObject extends Group {
         this(scene, name, texture, PhysicsMode.None);
     }
 
+    /**
+     * Sceneから呼ばれる
+     */
     public void start(){
         isPaused = false;
         for (IGameScript script : attachedScriptList){
@@ -58,13 +74,23 @@ public class GameObject extends Group {
         }
     }
 
+    /**
+     * Sceneから呼ばれる
+     */
     public void pause(){
         isPaused = true;
     }
+
+    /**
+     * Sceneから呼ばれる
+     */
     public void resume(){
         isPaused = false;
     }
 
+    /**
+     * Sceneから呼ばれる
+     */
     public void dispose(){
         for (IGameScript script : attachedScriptList){
             script.destroy(this);
@@ -72,13 +98,26 @@ public class GameObject extends Group {
         texture.dispose();
     }
 
+    /**
+     * textureを返す
+     * @return Texture
+     */
     public Texture getTexture(){
         return texture;
     }
 
+    /**
+     * PhysicsModeを設定
+     * @param mode physicsMode
+     */
     public void setPhysicsMode(PhysicsMode mode){
         this.physicsMode = mode;
     }
+
+    /**
+     * physicsModeを取得
+     * @return
+     */
     public PhysicsMode getPhysicsMode(){
         return physicsMode;
     }
@@ -111,6 +150,10 @@ public class GameObject extends Group {
         setCollisionRectangleSize(new Rectangle(0, 0, getWidth(), getHeight()));
     }
 
+    /**
+     * IGameScriptを実装したクラス（スクリプト）をアタッチする
+     * @param script IGameScriptを実装したクラス
+     */
     public void attachScript(IGameScript script){
         attachedScriptList.add(script);
     }
@@ -140,16 +183,30 @@ public class GameObject extends Group {
         return super.remove();
     }
 
+    /**
+     * Sceneから呼ばれる
+     * @param target target
+     */
     public void onCollisionEnter(GameObject target){
         for (IGameScript script : attachedScriptList){
             script.onCollisionEnter(this, target);
         }
     }
+
+    /**
+     * Sceneから呼ばれる
+     * @param target target
+     */
     public void onCollision(GameObject target){
         for (IGameScript script : attachedScriptList){
             script.onCollision(this, target);
         }
     }
+
+    /**
+     * Sceneから呼ばれる
+     * @param target target
+     */
     public void onCollisionExit(GameObject target){
         for (IGameScript script : attachedScriptList){
             script.onCollisionExit(this, target);

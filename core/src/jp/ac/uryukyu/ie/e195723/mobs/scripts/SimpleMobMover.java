@@ -13,13 +13,26 @@ public class SimpleMobMover implements IGameScript {
     private boolean isTouched;
     private boolean onStay;
 
+    /**
+     * コンストラクタ
+     * @param moveSpeed 移動速度(毎秒)
+     */
     public SimpleMobMover(float moveSpeed){
         this.moveSpeed = moveSpeed;
     }
 
+    /**
+     * trueに設定するとこのフレームでは移動しない
+     * @param onStay trueで移動しない
+     */
     public void setOnStay(boolean onStay){
         this.onStay = onStay;
     }
+
+    /**
+     * onStayの状態を返す
+     * @return onStay
+     */
     public boolean getOnStay(){
         return onStay;
     }

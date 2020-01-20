@@ -11,11 +11,18 @@ import java.util.List;
  * hitPointを持つ，mob,objectに共通する基底クラス
  */
 public abstract class StageObject extends GameObject {
+    /**
+     * 所属
+     */
     public enum TeamCode{
         Defense,
         Enemy,
         Object,
     }
+
+    /**
+     * 属性値
+     */
     public enum AttributeCode{
         Mob,
         Obstacle
@@ -28,6 +35,15 @@ public abstract class StageObject extends GameObject {
 
     private float hitPoint;
 
+    /**
+     * コンストラクタ
+     * @param scene 所属するシーン
+     * @param name 名前
+     * @param texture TextureのFileHandle
+     * @param physicsMode physicsMode
+     * @param hitPoint ヒットポイント
+     * @param teamCode 所属
+     */
     public StageObject(Scene scene, String name, FileHandle texture, PhysicsMode physicsMode, float hitPoint, TeamCode teamCode) {
         super(scene, name, texture, physicsMode);
         attributes = new ArrayList<>();

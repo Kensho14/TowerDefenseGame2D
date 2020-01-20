@@ -10,6 +10,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.*;
 
+/**
+ * Sceneを包み込み，利便性を高めたシーングラフ
+ */
 public class Scene extends Stage {
     private List<GameObject> gameObjects;
     private boolean isPaused;
@@ -18,6 +21,10 @@ public class Scene extends Stage {
 
     public boolean useCollisionDebugLine;
 
+    /**
+     * コンストラクタ
+     * @param viewport viewport
+     */
     public Scene(Viewport viewport){
         super(viewport);
         gameObjects = new ArrayList<>();
@@ -29,26 +36,46 @@ public class Scene extends Stage {
         this(new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
     }
 
+    /**
+     * GameObjectをシーンに追加する
+     * @param gameObject GameObject
+     */
     public void addGameObject(GameObject gameObject){
         gameObjects.add(gameObject);
         addActor(gameObject);
         if (!isPaused) gameObject.start();
     }
+
+    /**
+     * GameObjectをシーンから削除する
+     * @param gameObject gameObject
+     */
     public void removeGameObject(GameObject gameObject){
         gameObjectToRemove.add(gameObject);
     }
 
+    /**
+     * シーンを開始する
+     */
     public void start(){
         for (GameObject gameObject : gameObjects){
             gameObject.start();
         }
     }
+
+    /**
+     * 一時停止時に呼び出す
+     */
     public void pause(){
         isPaused = true;
         for (GameObject gameObject : gameObjects){
             gameObject.pause();
         }
     }
+
+    /**
+     * 一時停止から復旧する際に呼び出す
+     */
     public void resume(){
         isPaused = false;
         for (GameObject gameObject : gameObjects){
@@ -85,6 +112,9 @@ public class Scene extends Stage {
         }
     }
 
+    /**
+     * 衝突判定
+     */
     private void checkCollisions(){
         float margin = 10;
         for (GameObject gameObject : gameObjects){

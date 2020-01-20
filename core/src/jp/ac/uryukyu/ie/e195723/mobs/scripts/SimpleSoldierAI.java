@@ -10,6 +10,9 @@ import jp.ac.uryukyu.ie.e195723.engine.IGameScript;
 import jp.ac.uryukyu.ie.e195723.mobs.MobBase;
 import jp.ac.uryukyu.ie.e195723.scenes.BattleScene;
 
+/**
+ * Soldier用のシンプルなAI
+ */
 public class SimpleSoldierAI implements IGameScript {
     private long attackCoolTime;
     private float attackPoint;
@@ -18,6 +21,12 @@ public class SimpleSoldierAI implements IGameScript {
 
     private long lastAttackTime;
 
+    /**
+     *
+     * @param attackPoint 攻撃力
+     * @param attackCoolTime 攻撃のクールタイム
+     * @param attackRange 攻撃範囲
+     */
     public SimpleSoldierAI(float attackPoint, long attackCoolTime, float attackRange){
         this.attackCoolTime = TimeUtils.millisToNanos(attackCoolTime);
         lastAttackTime = TimeUtils.nanoTime();
@@ -26,6 +35,11 @@ public class SimpleSoldierAI implements IGameScript {
         attackSound = Gdx.audio.newSound(Gdx.files.internal("sound/machinegun-firing1.mp3"));
     }
 
+    /**
+     * 攻撃を実行（基本的に外部からは呼び出さない)
+     * @param soldier 自身
+     * @param target 相手
+     */
     public void attack(StageObject soldier, StageObject target){
         target.receiveDamage(attackPoint, soldier);
         attackSound.play();

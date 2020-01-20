@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import jp.ac.uryukyu.ie.e195723.scenes.BattleScene;
 
+/**
+ * ゲームのメインクラス。エントリポイント。
+ */
 public class GameMain extends ApplicationAdapter {
 	private BattleScene currentScene;
 
