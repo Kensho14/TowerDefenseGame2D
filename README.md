@@ -8,6 +8,9 @@ prog2のreport6で作成した2Dのタワーディフェンスゲーム。
 　残り時間と予算は左上に，購入可能なユニットは右上にある。
 ユニットを押すと，マウスカーソルにアイコンがくっついてくるので，配置したい場所で左クリックで配置。
 
+### プレイ画面:
+![プレイ画面](https://github.com/Kensho14/TowerDefenseGame2D/raw/master/doc/game_ss.png)
+
 ## Gradlew使用法
 実行可能なJarの生成：
 ```shell script
