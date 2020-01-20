@@ -70,7 +70,9 @@ public class Scene extends Stage {
             gameObjects.remove(gameObject);
         }
         gameObjectToRemove.clear();
-        checkCollisions();
+        if (!isPaused){
+            checkCollisions();
+        }
         super.draw();
         if (useCollisionDebugLine){
             debugRender.begin(ShapeRenderer.ShapeType.Line);
