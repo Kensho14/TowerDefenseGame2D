@@ -24,6 +24,6 @@ public class MobBase extends StageObject {
 
     @Override
     public void onDeath(StageObject attacker) {
-
+        remove();
     }
 }

@@ -35,6 +35,7 @@ public class SimpleMobMover implements IGameScript {
             gameObject.setPosition(gameObject.getX()+moveSpeed * delta, gameObject.getY());
         }
         isTouched = false;
+        onStay = false;
     }
 
     @Override
