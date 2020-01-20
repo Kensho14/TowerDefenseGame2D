@@ -12,13 +12,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.TimeUtils;
 import jp.ac.uryukyu.ie.e195723.SimpleBlock;
 import jp.ac.uryukyu.ie.e195723.dataObj.UnitData;
+import jp.ac.uryukyu.ie.e195723.engine.GameObject;
 import jp.ac.uryukyu.ie.e195723.engine.Scene;
+import jp.ac.uryukyu.ie.e195723.mobs.MobBase;
 import jp.ac.uryukyu.ie.e195723.mobs.SimpleSoldier;
 import jp.ac.uryukyu.ie.e195723.mobs.Zombie;
 import jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil.BLOCK_BASE_SIZE;
 import static jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil.getPosFromBlockPos;
@@ -42,6 +45,8 @@ public class BattleScene extends Scene {
     private List<UnitData> inventoryData;
     private UnitData selectedUnitData;
     private Texture selectedUnitIcon;
+
+    private List<MobBase> enemies;
 
     public BattleScene(){
         useCollisionDebugLine = true;
@@ -77,8 +82,13 @@ public class BattleScene extends Scene {
             new SimpleSoldier(this, getPosFromBlockPos(blockPosition));
         }
         if (unitData.id.equalsIgnoreCase("zombie1")){
-            new Zombie(this, getPosFromBlockPos(blockPosition));
+            enemies.add(new Zombie(this, getPosFromBlockPos(blockPosition)));
         }
+    }
+
+    private void finishGame(boolean isVictory){
+        pause();
+        System.out.println("game finish: "+isVictory);
     }
 
     void setupBackground(){
@@ -135,6 +145,7 @@ public class BattleScene extends Scene {
         inventoryData.add(new UnitData("iron2", 50, "Iron", "img/stage/iron2.png"));
         inventoryData.add(new UnitData("drum_can", 20, "Drum can", "img/stage/drum_can.png"));
         inventoryData.add(new UnitData("soldier1", 100, "Soldier", "img/characters/soldier_chara_33.png"));
+        enemies = new ArrayList<>();
         setupUI();
         setupBackground();
         for (int i=0; i < (Gdx.graphics.getWidth()/ BLOCK_BASE_SIZE); i++){
@@ -144,9 +155,19 @@ public class BattleScene extends Scene {
         spawnUnit(new UnitData("zombie1", 10, "Zombie", "img/characters/zombie_chara_33.png"), new Vector2(-1,1));
     }
 
+    /**
+     * Enemyが右端に到達した際にEnemyから呼ばれる
+     */
     public void enemyScored(){
-        pause();
-        System.out.println("Game over!");
+        finishGame(false);
+    }
+
+    /**
+     * すべての敵mobの配列を返す
+     * @return 敵Mobの配列
+     */
+    public MobBase[] getAllEnemies(){
+        return enemies.toArray(new MobBase[enemies.size()]);
     }
 
     @Override
@@ -166,6 +187,15 @@ public class BattleScene extends Scene {
             getBatch().begin();
             getBatch().draw(selectedUnitIcon, mousePos.x, mousePos.y);
             getBatch().end();
+        }
+    }
+
+    @Override
+    public void removeGameObject(GameObject gameObject){
+        super.removeGameObject(gameObject);
+        if (enemies.contains(gameObject)){
+            System.out.println("remove enemy");
+            enemies.remove(gameObject);
         }
     }
 
