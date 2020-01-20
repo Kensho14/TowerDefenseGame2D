@@ -71,9 +71,9 @@ public class BattleScene extends Scene {
         unitDataBank.put("drum_can", new UnitData("drum_can", 20, "Drum", "img/stage/drum_can.png"));
         unitDataBank.put("iron2", new UnitData("iron2", 50, "IronBlock", "img/stage/iron2.png"));
         unitDataBank.put("soldier1", new UnitData("soldier1", 100, "Soldier", "img/characters/soldier_chara_33.png"));
-        unitDataBank.put("zombie1", new UnitData("soldier1", 100, "Soldier", "img/characters/soldier_chara_33.png"));
-        
-        useCollisionDebugLine = true;
+        unitDataBank.put("zombie1", new UnitData("zombie1", 10, "Zombie", "img/characters/zombie_chara_16.png"));
+
+        useCollisionDebugLine = false;
         Gdx.input.setInputProcessor(this);
     }
 
@@ -174,6 +174,7 @@ public class BattleScene extends Scene {
     }
 
     public void loadSample(){
+        //本来はjson等から動的に読み込むが，ここではハードコーディング
         lastUpdateTime = TimeUtils.millis();
         lastEnemySpawnTime = TimeUtils.millis();
         remainingTime = 3*60*1000;
@@ -190,8 +191,10 @@ public class BattleScene extends Scene {
         for (int i=0; i < (Gdx.graphics.getWidth()/ BLOCK_BASE_SIZE); i++){
             new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/stone_t.png"), 5000, new Vector2(1, 1), getPosFromBlockPos(new Vector2(i, 0)));
         }
-        //キューに登録
+        //キューに登録 (10秒ごとにゾンビをスポーン)
         enemySpawnQue.add(new UnitDataTimePair(unitDataBank.get("zombie1"), 100));
+        enemySpawnQue.add(new UnitDataTimePair(unitDataBank.get("zombie1"), 10000));
+        enemySpawnQue.add(new UnitDataTimePair(unitDataBank.get("zombie1"), 10000));
     }
 
     /**
