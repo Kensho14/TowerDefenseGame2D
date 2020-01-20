@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		config.width = 1280;//720p
 		config.height = 720;
 		config.title = "Tower Defense Game 2D";
-		new LwjglApplication(new MyGdxGame(), config){
+		new LwjglApplication(new GameMain(), config){
 			@Override
 			public void exit()
 			{

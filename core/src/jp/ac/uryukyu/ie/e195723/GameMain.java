@@ -9,17 +9,18 @@ import jp.ac.uryukyu.ie.e195723.engine.Scene;
 import jp.ac.uryukyu.ie.e195723.scenes.BattleScene;
 
 public class GameMain extends ApplicationAdapter {
-	private Scene currentScene;
+	private BattleScene currentScene;
 
 	@Override
 	public void create () {
 		currentScene = new BattleScene();
+		currentScene.LoadSample();
 		currentScene.start();
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(137, 189, 222, 1);//空色?
+		//Gdx.gl.glClearColor(137, 189, 222, 1);//空色?
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		currentScene.act(Gdx.graphics.getDeltaTime());
 		currentScene.draw();
