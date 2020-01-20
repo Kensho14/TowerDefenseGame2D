@@ -43,7 +43,7 @@ public class GameObject extends Group {
         scene.addGameObject(this);
         setSize(this.texture.getWidth(), this.texture.getHeight());
         setBounds(getX(), getY(), getWidth(), getHeight());
-        collisionRectangle = new Rectangle(getX(), getY(), getWidth(), getHeight());
+        collisionRectangle = new Rectangle(0, 0, getWidth(), getHeight());
         this.physicsMode = physicsMode;
         belongedScene = scene;
     }
@@ -88,12 +88,27 @@ public class GameObject extends Group {
      * @return rectangle
      */
     public Rectangle getCollisionRectangle(){
-        collisionRectangle.setPosition(getX(), getY());
-        return collisionRectangle;
+        return new Rectangle(getX()+collisionRectangle.x, getY()+collisionRectangle.y, collisionRectangle.width, collisionRectangle.height);
     }
-    public void setCollisionRectangleSize(Vector2 size){
-        collisionRectangle.width = size.x;
-        collisionRectangle.height = size.y;
+
+    /**
+     * 当たり判定用のボックスの位置，サイズを設定する。
+     * @param rect x,yは基準点からのズレ。width,heightはサイズ。
+     */
+    public void setCollisionRectangleSize(Rectangle rect){
+        collisionRectangle = rect;
+    }
+
+    /**
+     * サイズを変更する。
+     * setSize, setBounds, setCollisionRectangleSize をひとまとめに実行するメソッド。
+     * @param width width
+     * @param height height
+     */
+    public void changeSize(float width, float height){
+        setSize(width, height);
+        setBounds(getX(), getY(), getWidth(), getHeight());
+        setCollisionRectangleSize(new Rectangle(0, 0, getWidth(), getHeight()));
     }
 
     public void attachScript(IGameScript script){
