@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import jp.ac.uryukyu.ie.e195723.engine.Scene;
+import jp.ac.uryukyu.ie.e195723.mobs.scripts.ZombieSimpleAI;
 
 public class Zombie extends MobBase {
     public static final float DEFAULT_HITPOINT = 10;
@@ -14,5 +15,6 @@ public class Zombie extends MobBase {
         super(scene, "mob_zombie", Gdx.files.internal(TEX_PATH), PhysicsMode.Active, DEFAULT_MOVESPEED, DEFAULT_HITPOINT, TeamCode.Enemy);
         changeSize(48, 62);
         setPosition(position.x, position.y);
+        attachScript(new ZombieSimpleAI(3*1000, 3));
     }
 }

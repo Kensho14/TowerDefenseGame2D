@@ -15,7 +15,13 @@ public class SimpleBlock extends StageObject {
     }
 
     @Override
-    public void onDeath(StageObject attacker) {
+    public boolean receiveDamage(float amount, StageObject attacker){
+        System.out.println("damaged! HP:"+getHitPoint());
+        return super.receiveDamage(amount, attacker);
+    }
 
+    @Override
+    public void onDeath(StageObject attacker) {
+        remove();
     }
 }

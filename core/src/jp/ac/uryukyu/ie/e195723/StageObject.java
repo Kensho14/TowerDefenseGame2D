@@ -4,6 +4,9 @@ import com.badlogic.gdx.files.FileHandle;
 import jp.ac.uryukyu.ie.e195723.engine.GameObject;
 import jp.ac.uryukyu.ie.e195723.engine.Scene;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * hitPointを持つ，mob,objectに共通する基底クラス
  */
@@ -11,16 +14,23 @@ public abstract class StageObject extends GameObject {
     public enum TeamCode{
         Defense,
         Enemy,
-        Object
+        Object,
+    }
+    public enum AttributeCode{
+        Mob,
+        Obstacle
     }
 
     private float maxHitPoint;
     private TeamCode teamCode;
 
+    public List<AttributeCode> attributes;
+
     private float hitPoint;
 
     public StageObject(Scene scene, String name, FileHandle texture, PhysicsMode physicsMode, float hitPoint, TeamCode teamCode) {
         super(scene, name, texture, physicsMode);
+        attributes = new ArrayList<>();
         this.hitPoint = hitPoint;
         maxHitPoint = hitPoint;
         this.teamCode = teamCode;

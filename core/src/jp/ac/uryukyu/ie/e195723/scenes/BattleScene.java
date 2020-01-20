@@ -22,9 +22,9 @@ public class BattleScene extends Scene {
         for (int i=0; i < (Gdx.graphics.getWidth()/ BLOCK_BASE_SIZE); i++){
             new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/stone_t.png"), 5000, new Vector2(1, 1), getPosFromBlockPos(new Vector2(i, 0)));
         }
-        new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/stone_t.png"), 5000, new Vector2(1, 1), getPosFromBlockPos(new Vector2(6, 1)));
+        new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/iron2.png"), 10, new Vector2(1, 1), getPosFromBlockPos(new Vector2(4, 1)));
         new Zombie(this, new Vector2(0, BLOCK_BASE_SIZE));
-        new Zombie(this, new Vector2(-5, BLOCK_BASE_SIZE));
+        //new Zombie(this, new Vector2(-5, BLOCK_BASE_SIZE));
     }
 
     @Override
