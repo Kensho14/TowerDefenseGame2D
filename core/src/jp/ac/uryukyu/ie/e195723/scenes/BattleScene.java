@@ -8,5 +8,7 @@ public class BattleScene extends Scene {
 
     }
 
+    public void LoadSample(){
 
+    }
 }

@@ -3,6 +3,7 @@ package jp.ac.uryukyu.ie.e195723.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import jp.ac.uryukyu.ie.e195723.GameMain;
+import jp.ac.uryukyu.ie.e195723.engine.example.MyGdxGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -10,7 +11,7 @@ public class DesktopLauncher {
 		config.width = 1280;//720p
 		config.height = 720;
 		config.title = "Tower Defense Game 2D";
-		new LwjglApplication(new GameMain(), config){
+		new LwjglApplication(new MyGdxGame(), config){
 			@Override
 			public void exit()
 			{

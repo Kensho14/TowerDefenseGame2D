@@ -34,8 +34,10 @@ public class GameObject extends Group {
     public GameObject(Scene scene, String name, FileHandle texture, PhysicsMode physicsMode){
         isPaused = true;
         setName(name);
-        this.texture = new Texture(texture);
-        textureRegion = new TextureRegion(this.texture, this.texture.getWidth(), this.texture.getHeight());
+        if (texture != null){
+            this.texture = new Texture(texture);
+            textureRegion = new TextureRegion(this.texture, this.texture.getWidth(), this.texture.getHeight());
+        }
         attachedScriptList = new ArrayList<IGameScript>();
         collidingGameObjects = new HashSet<>();
         scene.addGameObject(this);
@@ -100,6 +102,7 @@ public class GameObject extends Group {
 
     @Override
     public void draw(Batch batch, float parentAlpha){
+        if (texture == null) return;
         Color color = getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
         batch.draw(textureRegion, getX(), getY(), getOriginX(), getOriginY(),
