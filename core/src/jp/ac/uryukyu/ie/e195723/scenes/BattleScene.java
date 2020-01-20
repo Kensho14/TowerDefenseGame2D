@@ -19,8 +19,7 @@ import jp.ac.uryukyu.ie.e195723.mobs.SimpleSoldier;
 import jp.ac.uryukyu.ie.e195723.mobs.Zombie;
 import jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +43,8 @@ public class BattleScene extends Scene {
     private int moneyAmount;
     private long remainingTime;//ms
     private long lastUpdateTime;//ms
-    private List<MobBase> enemySpawnQue;
+    private long lastEnemySpawnTime;//ms
+    private List<UnitDataTimePair> enemySpawnQue;
 
     private List<UnitData> inventoryData;
     private UnitData selectedUnitData;
@@ -53,7 +53,26 @@ public class BattleScene extends Scene {
     private List<MobBase> enemies;
     private boolean isPaused;
 
+    private Map<String, UnitData> unitDataBank;
+
+    public class UnitDataTimePair{
+        public UnitData unitData;
+        public long milliseconds;
+
+        public UnitDataTimePair(UnitData unitData, long milliseconds){
+            this.unitData = unitData;
+            this.milliseconds = milliseconds;
+        }
+    }
+
     public BattleScene(){
+        //TODO:余裕があったらハードコーディングを直して，jsonから読み込む
+        unitDataBank = new HashMap<>();
+        unitDataBank.put("drum_can", new UnitData("drum_can", 20, "Drum", "img/stage/drum_can.png"));
+        unitDataBank.put("iron2", new UnitData("iron2", 50, "IronBlock", "img/stage/iron2.png"));
+        unitDataBank.put("soldier1", new UnitData("soldier1", 100, "Soldier", "img/characters/soldier_chara_33.png"));
+        unitDataBank.put("zombie1", new UnitData("soldier1", 100, "Soldier", "img/characters/soldier_chara_33.png"));
+        
         useCollisionDebugLine = true;
         Gdx.input.setInputProcessor(this);
     }
@@ -156,22 +175,23 @@ public class BattleScene extends Scene {
 
     public void loadSample(){
         lastUpdateTime = TimeUtils.millis();
+        lastEnemySpawnTime = TimeUtils.millis();
         remainingTime = 3*60*1000;
         moneyAmount = 250;
         inventoryData = new ArrayList<>();
-        inventoryData.add(new UnitData("drum_can", 20, "Drum", "img/stage/drum_can.png"));
-        inventoryData.add(new UnitData("iron2", 50, "IronBlock", "img/stage/iron2.png"));
-        inventoryData.add(new UnitData("soldier1", 100, "Soldier", "img/characters/soldier_chara_33.png"));
+        inventoryData.add(unitDataBank.get("drum_can"));
+        inventoryData.add(unitDataBank.get("iron2"));
+        inventoryData.add(unitDataBank.get("soldier1"));
         enemies = new ArrayList<>();
-        enemySpawnQue = new LinkedList<>();
+        enemySpawnQue = new ArrayList<>();
         setupUI();
         setupBackground();
+        //床を設置
         for (int i=0; i < (Gdx.graphics.getWidth()/ BLOCK_BASE_SIZE); i++){
             new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/stone_t.png"), 5000, new Vector2(1, 1), getPosFromBlockPos(new Vector2(i, 0)));
         }
-        new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/iron2.png"), 10, new Vector2(1, 1), getPosFromBlockPos(new Vector2(4, 1)));
-        spawnUnit(new UnitData("zombie1", 10, "Zombie", "img/characters/zombie_chara_33.png"), new Vector2(-1,1));
-
+        //キューに登録
+        enemySpawnQue.add(new UnitDataTimePair(unitDataBank.get("zombie1"), 100));
     }
 
     /**
@@ -203,6 +223,12 @@ public class BattleScene extends Scene {
             timerLabel.setText("RemainingTime: "+getFormattedTimeText(remainingTime));
             if (remainingTime <= 0){
                 finishGame(true);
+            }
+
+            if (enemySpawnQue.size() > 0 && TimeUtils.timeSinceMillis(lastEnemySpawnTime) >= enemySpawnQue.get(0).milliseconds){
+                //spawn enemy
+                lastEnemySpawnTime = TimeUtils.millis();
+                spawnUnit(enemySpawnQue.remove(0).unitData, new Vector2(-1,1));
             }
         }
         if (selectedUnitIcon != null){
