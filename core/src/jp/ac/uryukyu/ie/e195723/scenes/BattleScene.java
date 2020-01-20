@@ -1,6 +1,7 @@
 package jp.ac.uryukyu.ie.e195723.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import jp.ac.uryukyu.ie.e195723.SimpleBlock;
@@ -12,6 +13,7 @@ import static jp.ac.uryukyu.ie.e195723.utils.BlockPosUtil.getPosFromBlockPos;
 
 public class BattleScene extends Scene {
     private Texture backgroundTex;
+    private Music backgroundMusic;
 
     public BattleScene(){
         useCollisionDebugLine = true;
@@ -19,6 +21,9 @@ public class BattleScene extends Scene {
 
     public void LoadSample(){
         backgroundTex = new Texture(Gdx.files.internal("img/stage/back01.png"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/The-Nine.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.play();
         for (int i=0; i < (Gdx.graphics.getWidth()/ BLOCK_BASE_SIZE); i++){
             new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/stone_t.png"), 5000, new Vector2(1, 1), getPosFromBlockPos(new Vector2(i, 0)));
         }
