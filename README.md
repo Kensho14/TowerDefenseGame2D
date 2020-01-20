@@ -17,3 +17,12 @@ JUnitテストの実行：
 ```shell script
 gradlew core:test
 ```
+
+## 素材
+以下のサイト様からお借りしました。
+```plain
+画像： http://hi79.web.fc2.com/material/frame-material.html
+BGM: http://www.newgrounds.com/audio/listen/523891
+SE: https://soundeffect-lab.info/sound/battle/battle2.html
+UI skin: https://github.com/libgdx/libgdx-skins
+```
