@@ -15,5 +15,5 @@ gradlew desktop:dist
 ```
 JUnitテストの実行：
 ```shell script
-
+gradlew core:test
 ```
