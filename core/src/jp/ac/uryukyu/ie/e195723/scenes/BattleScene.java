@@ -3,6 +3,7 @@ package jp.ac.uryukyu.ie.e195723.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import jp.ac.uryukyu.ie.e195723.SimpleBlock;
 import jp.ac.uryukyu.ie.e195723.engine.Scene;
 import jp.ac.uryukyu.ie.e195723.mobs.Zombie;
 
@@ -15,8 +16,11 @@ public class BattleScene extends Scene {
 
     public void LoadSample(){
         backgroundTex = new Texture(Gdx.files.internal("img/stage/back01.png"));
-        new Zombie(this, new Vector2(0, 0));
-        new Zombie(this, new Vector2(-5, 0));
+        for (int i=0; i < (Gdx.graphics.getWidth()/ SimpleBlock.BLOCK_BASE_SIZE); i++){
+            new SimpleBlock(this, "floor_block", Gdx.files.internal("img/stage/stone_t.png"), 5000, new Vector2(1, 1), new Vector2(i*SimpleBlock.BLOCK_BASE_SIZE, 0));
+        }
+        new Zombie(this, new Vector2(0, SimpleBlock.BLOCK_BASE_SIZE));
+        new Zombie(this, new Vector2(-5, SimpleBlock.BLOCK_BASE_SIZE));
     }
 
     @Override
