@@ -11,7 +11,7 @@ public class Zombie extends MobBase {
     public static final String TEX_PATH = "img/characters/zombie_chara_16.png";
 
     public Zombie(Scene scene, Vector2 position) {
-        super(scene, "mob_zombie", Gdx.files.internal(TEX_PATH), PhysicsMode.Passive, DEFAULT_MOVESPEED, DEFAULT_HITPOINT, TeamCode.Enemy);
+        super(scene, "mob_zombie", Gdx.files.internal(TEX_PATH), PhysicsMode.Active, DEFAULT_MOVESPEED, DEFAULT_HITPOINT, TeamCode.Enemy);
         changeSize(48, 62);
         setPosition(position.x, position.y);
     }

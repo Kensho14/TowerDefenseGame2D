@@ -1,5 +1,6 @@
 package jp.ac.uryukyu.ie.e195723.mobs;
 
+import jp.ac.uryukyu.ie.e195723.StageObject;
 import jp.ac.uryukyu.ie.e195723.engine.GameObject;
 import jp.ac.uryukyu.ie.e195723.engine.IGameScript;
 
@@ -29,7 +30,8 @@ public class SimpleMobMover implements IGameScript {
 
     @Override
     public void onCollisionEnter(GameObject gameObject, GameObject target) {
-        isTouched = true;
+        if (!(target instanceof StageObject)) return;
+        if (((StageObject)target).getTeamCode() == StageObject.TeamCode.Object) isTouched = true;
     }
 
     @Override
@@ -39,6 +41,9 @@ public class SimpleMobMover implements IGameScript {
 
     @Override
     public void onCollisionExit(GameObject gameObject, GameObject target) {
-        isTouched = false;
+        if (!(target instanceof StageObject)) return;
+        if (((StageObject)target).getTeamCode() == StageObject.TeamCode.Object){
+            isTouched = false;
+        }
     }
 }
